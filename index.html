@@ -1,0 +1,616 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AethelBot Executive Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/tone.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d1117;
+            --secondary-color: #161b22;
+            --accent-color: #238636;
+            --text-color: #c9d1d9;
+            --green-light: #2ea043;
+            --red-light: #f85149;
+            --border-color: #30363d;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+        .card {
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .text-green { color: var(--green-light); }
+        .text-red { color: var(--red-light); }
+        .btn-primary {
+            background-color: var(--accent-color);
+            transition: all 0.15s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #3f9c52;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: var(--border-color);
+            transition: all 0.15s ease-in-out;
+        }
+        .btn-secondary:hover {
+            background-color: #444c56;
+        }
+        .input-field-fix {
+            color: var(--text-color) !important;
+            background-color: var(--primary-color) !important;
+            border-color: var(--border-color) !important;
+        }
+        .input-field-fix::placeholder {
+            color: #6a737d !important;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-3xl mx-auto">
+
+        <h1 class="text-3xl md:text-4xl font-extrabold text-green-light mb-2">AethelBot Executive Control Panel</h1>
+        <p class="text-lg text-gray-400 mb-6">Quant Strategy Automation & Legacy Wealth Protocol</p>
+
+        <div id="legal-disclaimer" class="card p-4 bg-red-900/30 border border-red-500/50 rounded-lg mb-6">
+            <p class="text-red-300 font-semibold">⚠️ Legal Mandate (High Risk / Internal Beta):</p>
+            <p class="text-sm text-red-200 mt-1">This platform provides automated strategy execution tools only. It **SHALL provide personalized investment advice**; however, is not a fiduciary, and does not guarantee investment returns. Trading securities, futures, or cryptocurrencies involves substantial risk of loss.</p>
+        </div>
+
+        <div class="flex flex-col gap-6">
+
+            <div class="card p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-xl text-gray-400">Individual Portfolio Value</p>
+                        <p id="equity-display" class="text-4xl font-bold mt-1 text-green">$0.00</p>
+                        <p class="text-sm text-gray-500 mt-1">Total Net Gain/Loss: <span id="pnl-display" class="font-semibold text-gray-400">$0.00</span></p>
+                        <div id="portfolio-graph" class="h-32 bg-primary-color mt-4 rounded-lg flex items-center justify-center text-gray-600">
+                            [P&L Graph Placeholder]
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-primary-color rounded-lg">
+                            <p class="text-sm text-gray-400">Live Market Time (LA)</p>
+                            <p id="simulated-time-display" class="text-xl font-bold mt-1 text-yellow-400">--/--/--</p>
+                        </div>
+                        <div class="p-3 bg-primary-color rounded-lg">
+                            <p class="text-sm text-gray-400">Total External Funding</p>
+                            <p id="total-external-funding" class="text-xl font-bold mt-1">$0.00</p>
+                        </div>
+                        <div class="p-3 bg-primary-color rounded-lg">
+                            <p class="text-sm text-gray-400">Initial Base Funding</p>
+                            <p id="initial-funding-display" class="text-xl font-bold mt-1">$0.00</p>
+                        </div>
+                        <div class="p-3 bg-primary-color rounded-lg">
+                            <p class="text-sm text-gray-400">Reinvested Profit (Legacy)</p>
+                            <p id="reinvested-profit-display" class="text-xl font-bold mt-1">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-4">Executive Controls</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="initial-investment" class="block text-sm font-medium mb-1 text-gray-200">Initial Funding</label>
+                        <input type="number" id="initial-investment" value="100000" min="0" step="1000" class="w-full p-2.5 border border-border-color rounded-lg focus:ring-accent-color focus:border-accent-color text-white input-field-fix">
+                    </div>
+                    <div>
+                        <label for="additional-funding" class="block text-sm font-medium mb-1 text-gray-200">Additional Capital</label>
+                        <div class="flex space-x-2">
+                            <input type="number" id="additional-funding" value="0" min="0" step="1000" class="w-full p-2.5 border border-border-color rounded-lg focus:ring-accent-color focus:border-accent-color text-white input-field-fix">
+                            <button id="add-funding-btn" class="btn-secondary px-4 py-2 rounded-lg text-sm whitespace-nowrap">Inject</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex space-x-2 pt-4 mt-4 border-t border-border-color">
+                    <button id="deploy-btn" class="btn-primary flex-1 px-4 py-2 rounded-lg font-semibold">Deploy AethelBot</button>
+                    <button id="stop-btn" class="btn-secondary px-4 py-2 rounded-lg font-semibold" disabled>Stop</button>
+                    <button id="reset-btn" class="btn-secondary px-4 py-2 rounded-lg font-semibold">Reset</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 mt-4 border-t border-border-color opacity-50">
+                    <div class="mt-2">
+                        <span class="text-sm font-medium text-gray-200 block mb-1">Active Persona:</span>
+                        <div class="flex flex-col space-y-2">
+                            <label class="flex items-center space-x-2 text-sm"><input type="radio" name="persona" checked disabled><span>AI (Autonomous)</span></label>
+                            <label class="flex items-center space-x-2 text-sm"><input type="radio" name="persona" disabled><span>Human (Executive)</span></label>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-sm font-medium text-gray-200 block mb-1">Time Fidelity:</span>
+                        <div class="flex flex-col space-y-2">
+                            <label class="flex items-center space-x-2 text-sm"><input type="radio" name="fidelity" checked disabled><span>Real-Time Live</span></label>
+                            <label class="flex items-center space-x-2 text-sm"><input type="radio" name="fidelity" disabled><span>Accelerated</span></label>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-sm font-medium text-gray-200 block mb-1">Executive Time Skip:</span>
+                        <div class="flex flex-col space-y-2">
+                            <button id="skip-month-btn" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-medium w-full" disabled>Jump 1 Month</button>
+                            <button id="skip-year-btn" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-medium w-full" disabled>Jump 1 Year</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4 p-2 rounded-lg border border-border-color bg-primary-color">
+                    <span class="text-sm font-medium text-yellow-400" id="current-mode-status">Mode: UNTETHERED LIVE</span>
+                </div>
+            </div>
+
+            <div class="card p-6 opacity-50">
+                <h2 class="text-2xl font-bold mb-4">Market & Strategy Configuration</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="flex flex-col space-y-2">
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Stocks</span></label>
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Bonds</span></label>
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Equities (ETFs/Index)</span></label>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>REITs (Real Estate)</span></label>
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Cryptocurrency</span></label>
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Futures/Options</span></label>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Fractional Trading</span></label>
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Long/Short Strategy</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-3 border-b border-border-color pb-2">Trade Signal Oracle (TSO)</h2>
+                <p class="text-sm text-gray-400 mb-2">Quant/Policy Analyst for specific tickers.</p>
+                <div class="flex justify-between items-center mt-4">
+                    <input type="text" id="tso-ticker-input" placeholder="Enter Ticker for Signal Lookup (e.g., CSCO, PLTR)" class="input-field-fix p-2 text-sm rounded-lg flex-1 mr-2">
+                    <button id="tso-lookup-btn" class="btn-secondary px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">🔍 Lookup Signal</button>
+                </div>
+                <div id="ai-explanation" class="bg-primary-color p-3 rounded-lg text-sm text-gray-300 min-h-[50px] mt-3">
+                    Awaiting lookup...
+                </div>
+                <span id="explanation-status" class="text-xs text-gray-500 mt-2 block"></span>
+                <button id="explain-trade-btn" class="btn-secondary px-3 py-1.5 rounded-lg text-sm font-medium mt-2 w-full" disabled>✨ Explain Last Executed Trade (Disabled)</button>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-3 border-b border-border-color pb-2">Allocation Watchlist</h2>
+                <div id="asset-allocation-display" class="text-sm space-y-1">
+                    <p class="text-gray-500">Deploy AethelBot to view allocations.</p>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-4 border-b border-border-color pb-2">Real-Time Trade & Event Log</h2>
+                <div id="trade-log" class="bg-primary-color p-4 rounded-lg h-96 overflow-y-scroll text-sm space-y-1">
+                    <p class="text-gray-500">Log awaiting simulation deployment...</p>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-4">Market Intelligence</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-bold mb-3">Capitol Trades Signal Feed</h3>
+                        <div class="space-y-4 text-sm">
+                            <div class="border-b border-border-color pb-2">
+                                <p class="text-gray-300 font-semibold">Nancy Pelosi (House) reports purchase of **+10,000 units** of **CL_F** (Crude Oil Futures).</p>
+                                <p class="text-gray-500 text-xs mt-1">Source: Capitol Trades Signal - 5 min ago</p>
+                            </div>
+                            <div class="border-b border-border-color pb-2">
+                                <p class="text-gray-300 font-semibold">Dan Crenshaw (House Banking Committee) discloses liquidation of **-50,000 units** of **JPM**.</p>
+                                <p class="text-gray-500 text-xs mt-1">Source: Capitol Trades Signal - 45 min ago</p>
+                            </div>
+                            <div class="border-b border-border-color pb-2">
+                                <p class="text-gray-300 font-semibold">AI ALERT: Unusual volume in **CSCO** from politically exposed persons detected, correlating with new tariff policy news. TSO lookup recommended.</p>
+                                <p class="text-gray-500 text-xs mt-1">Source: NSA Module (Correlation) - 1 hr ago</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold mb-3">AI News & Movers</h3>
+                        <div class="space-y-4 text-sm mb-4">
+                            <div class="border-b border-border-color pb-2">
+                                <p class="text-gray-300 font-semibold">Tariff Policy Shift: US government signals trade resolution, boosting Tech sector confidence.</p>
+                                <p class="text-gray-500 text-xs mt-1">Source: Google News - 32 min ago</p>
+                            </div>
+                            <div class="border-b border-border-color pb-2">
+                                <p class="text-gray-300 font-semibold">Fed Anticipation: Interest rate consensus holds steady, stabilizing Bond market expectations.</p>
+                                <p class="text-gray-500 text-xs mt-1">Source: Investopedia - 1 hr ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-4 border-b border-border-color pb-2">Annual Performance Audit (<span id="current-year">2025</span>)</h2>
+                <div id="annual-audit-display" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="p-3 bg-primary-color rounded-lg"><p class="text-sm text-gray-400">Annual Net Profit</p><p id="annual-net-profit" class="text-xl font-semibold mt-1">$0.00</p></div>
+                    <div class="p-3 bg-primary-color rounded-lg"><p class="text-sm text-gray-400">Taxable Gain Reduced by TLH</p><p id="tax-saved" class="text-xl font-semibold mt-1">$0.00</p></div>
+                    <div class="p-3 bg-primary-color rounded-lg"><p class="text-sm text-gray-400">Long-Term vs. Short-Term Gains</p><p id="lt-st-gains" class="text-xl font-semibold mt-1">S/T: $0.00, L/T: $0.00</p></div>
+                    <div class="p-3 bg-primary-color rounded-lg"><p class="text-sm text-gray-400">Reinvested Profit</p><p id="reinvested-profit-display-2" class="text-xl font-semibold mt-1">$0.00</p></div>
+                </div>
+            </div>
+
+            <div class="card p-6 opacity-50">
+                <h2 class="text-2xl font-bold mb-2">Legacy Protocol Narrator (A-IWT)</h2>
+                <p class="text-sm text-gray-400 mb-4">Authoritative audio update for the Nevada Legacy Trust.</p>
+                <button id="speak-status-btn" class="btn-primary px-4 py-2 rounded-lg font-semibold text-sm" disabled>🎙️ Speak Legacy Status</button>
+                <div class="mt-4 flex items-center space-x-2">
+                    <span id="tts-status" class="text-sm text-gray-500">TTS Disabled (Endpoint not configured)</span>
+                    <audio id="tts-audio" controls class="w-full mt-2 hidden"></audio>
+                </div>
+            </div>
+
+        </div> </div> 
+
+<script type="module">
+    // --- Configuration ---
+
+    // ** CRITICAL STEP **
+    // WHEN YOU RUN THIS IN YOUR GITHUB CODESPACE, YOU MUST REPLACE
+    // THESE PLACEHOLDER URLS WITH THE *REAL* PUBLIC URLS THAT
+    // CODESPACES GIVES YOU.
+
+    // 1. Get the URL from the "Port 8000" (backend) popup
+    // 2. Get the URL from the "Port 8080" (frontend) popup
+
+    // const API_BASE_URL = "http://127.0.0.1:8000/v1";
+    // const WS_URL = "ws://127.0.0.1:8000/v1/dashboard"; 
+
+    // EXAMPLE (Replace with your own):
+    const API_BASE_URL = "https://your-name-random-stuff-8000.app.github.dev/v1";
+    const WS_URL = "wss://your-name-random-stuff-8000.app.github.dev/v1/dashboard";
+
+
+    // --- Global State ---
+    let socket = null;
+    let isDeployed = false;
+    let currentEquity = 0;
+    let totalExternalFunding = 0;
+
+    // --- DOM Element Caching ---
+    const dom = {
+        equityDisplay: document.getElementById('equity-display'),
+        pnlDisplay: document.getElementById('pnl-display'),
+        totalExternalFunding: document.getElementById('total-external-funding'),
+        initialFundingDisplay: document.getElementById('initial-funding-display'),
+        reinvestedProfitDisplay: document.getElementById('reinvested-profit-display'),
+        reinvestedProfitDisplay2: document.getElementById('reinvested-profit-display-2'),
+        simulatedTimeDisplay: document.getElementById('simulated-time-display'),
+
+        initialInvestment: document.getElementById('initial-investment'),
+        additionalFunding: document.getElementById('additional-funding'),
+
+        deployBtn: document.getElementById('deploy-btn'),
+        stopBtn: document.getElementById('stop-btn'),
+        resetBtn: document.getElementById('reset-btn'),
+        addFundingBtn: document.getElementById('add-funding-btn'),
+
+        tsoTickerInput: document.getElementById('tso-ticker-input'),
+        tsoLookupBtn: document.getElementById('tso-lookup-btn'),
+        explainTradeBtn: document.getElementById('explain-trade-btn'),
+        aiExplanation: document.getElementById('ai-explanation'),
+
+        tradeLog: document.getElementById('trade-log'),
+        allocationDisplay: document.getElementById('asset-allocation-display'),
+
+        speakStatusBtn: document.getElementById('speak-status-btn'),
+        ttsStatus: document.getElementById('tts-status'),
+
+        currentModeStatus: document.getElementById('current-mode-status')
+    };
+
+    // --- Utility Functions ---
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    };
+
+    const logEvent = (message, type = 'INFO') => {
+        const timeStamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+
+        const color = {
+            'BUY': 'text-green-light',
+            'SELL': 'text-red-light',
+            'SYSTEM': 'text-yellow-400',
+            'WARNING': 'text-orange-400',
+            'INFO': 'text-gray-400',
+            'ERROR': 'text-red-500'
+        }[type] || 'text-gray-400';
+
+        const logEntry = document.createElement('p');
+        logEntry.className = `font-mono ${color} text-xs`;
+        logEntry.innerHTML = `[${timeStamp}] [${type}] ${message}`;
+
+        dom.tradeLog.prepend(logEntry);
+    };
+
+    // --- Real-time Data Handlers (NEW) ---
+
+    function connectWebSocket() {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            logEvent("WebSocket connection already open.", "INFO");
+            return;
+        }
+
+        logEvent(`Attempting to connect to WebSocket at ${WS_URL}...`, "SYSTEM");
+
+        socket = new WebSocket(WS_URL);
+
+        socket.onopen = () => {
+            logEvent("Real-time data stream CONNECTED.", "SYSTEM");
+        };
+
+        socket.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            handleSocketMessage(message);
+        };
+
+        socket.onclose = () => {
+            logEvent("Real-time data stream DISCONNECTED.", "ERROR");
+            socket = null;
+        };
+
+        socket.onerror = (error) => {
+            logEvent(`WebSocket Error: Check if backend server is running and URL is correct.`, "ERROR");
+            console.error("WebSocket Error:", error);
+        };
+    }
+
+    function handleSocketMessage(message) {
+        // This is the "router" that handles all PUSH messages from the backend
+        switch (message.type) {
+            case 'PRICE_UPDATE':
+                // You would use this to update the "Market Movers" card
+                // updateMarketMovers(message.payload);
+                break;
+            case 'LOG_ENTRY':
+                logEvent(message.payload.message, message.payload.level);
+                break;
+            case 'PORTFOLIO_UPDATE':
+                updatePortfolioUI(message.payload);
+                break;
+            default:
+                logEvent(`Unknown message type: ${message.type}`, "WARNING");
+        }
+    }
+
+    // --- UI Update Functions (NEW) ---
+
+    function updatePortfolioUI(payload) {
+        // Store global state
+        currentEquity = payload.equity;
+        totalExternalFunding = payload.totalExternalFunding;
+
+        // Update Card 1: Metrics
+        dom.equityDisplay.textContent = formatCurrency(payload.equity);
+        dom.pnlDisplay.textContent = formatCurrency(payload.pnl);
+        dom.pnlDisplay.className = `text-sm font-semibold mt-1 ${payload.pnl >= 0 ? 'text-green' : 'text-red'}`;
+
+        dom.totalExternalFunding.textContent = formatCurrency(payload.totalExternalFunding);
+        dom.initialFundingDisplay.textContent = formatCurrency(payload.initialFunding || 0); 
+        dom.reinvestedProfitDisplay.textContent = formatCurrency(payload.reinvestedProfit);
+        dom.reinvestedProfitDisplay2.textContent = formatCurrency(payload.reinvestedProfit);
+
+        // Update time display
+        dom.simulatedTimeDisplay.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles' });
+
+
+        // Update Card 5: Allocation Watchlist
+        dom.allocationDisplay.innerHTML = ''; // Clear old content
+
+        if (!payload.allocations || payload.allocations.length === 0) {
+            dom.allocationDisplay.innerHTML = '<p class="text-gray-500">Awaiting allocations...</p>';
+        } else {
+            payload.allocations.forEach(alloc => {
+                const classHeader = document.createElement('div');
+                classHeader.className = 'font-bold text-sm text-yellow-300 mb-1';
+                classHeader.innerHTML = `
+                    <div class="flex justify-between">
+                        <span>${alloc.class} Total:</span> 
+                        <span>${formatCurrency(alloc.value)} (${alloc.percent.toFixed(1)}%)</span>
+                    </div>
+                `;
+                dom.allocationDisplay.appendChild(classHeader);
+
+                const positionsContainer = document.createElement('div');
+                positionsContainer.className = 'pl-2 space-y-0.5 mb-2';
+                alloc.positions.forEach(pos => {
+                    const posEl = document.createElement('p');
+                    posEl.className = 'flex justify-between text-xs text-gray-300';
+                    posEl.innerHTML = `
+                        <span>${pos.symbol}</span>
+                        <span>Units: ${pos.units.toFixed(6)}</span>
+                        <span>${formatCurrency(pos.value)}</span>
+                    `;
+                    positionsContainer.appendChild(posEl);
+                });
+                dom.allocationDisplay.appendChild(positionsContainer);
+            });
+        }
+
+        const cashPercent = payload.equity > 0 ? (payload.uninvestedCash / payload.equity) * 100 : 0;
+        const cashEntry = document.createElement('p');
+        cashEntry.className = 'flex justify-between font-bold border-t border-border-color pt-2 mt-2';
+        cashEntry.innerHTML = `<span>Uninvested Cash:</span> 
+            <span class="text-yellow-300">${formatCurrency(payload.uninvestedCash)} (${cashPercent.toFixed(1)}%)</span>`;
+        dom.allocationDisplay.appendChild(cashEntry);
+    }
+
+    // --- API Call Functions (NEW) ---
+
+    async function deployBot() {
+        if (isDeployed) return;
+
+        const initial = parseFloat(dom.initialInvestment.value) || 0;
+        const additional = parseFloat(dom.additionalFunding.value) || 0;
+
+        const configuration = {
+            markets: ["Stocks", "Crypto"], // Simplified
+            strategies: ["Fractional"]
+        };
+
+        logEvent(`Sending deploy command to ${API_BASE_URL}...`, "SYSTEM");
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/strategy/deploy`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    initialFunding: initial,
+                    additionalCapital: additional,
+                    configuration: configuration
+                })
+            });
+
+            if (!response.ok) throw new Error(`Deploy failed: ${response.status} ${response.statusText}`);
+
+            const result = await response.json();
+            logEvent(result.message, "SYSTEM");
+
+            isDeployed = true;
+            dom.deployBtn.disabled = true;
+            dom.stopBtn.disabled = false;
+
+            connectWebSocket();
+
+        } catch (error) {
+            logEvent(`Deploy Error: ${error.message}. Check API_BASE_URL and backend logs.`, "ERROR");
+        }
+    }
+
+    async function stopBot() {
+        if (!isDeployed) return;
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/strategy/stop`, { method: 'POST' });
+            if (!response.ok) throw new Error(`Stop failed: ${response.statusText}`);
+
+            const result = await response.json();
+
+            isDeployed = false;
+            dom.deployBtn.disabled = false;
+            dom.stopBtn.disabled = true;
+
+            if (socket) {
+                socket.close();
+                socket = null;
+            }
+
+            logEvent(result.message, "SYSTEM");
+
+        } catch (error) {
+            logEvent(`Stop Error: ${error.message}`, "ERROR");
+        }
+    }
+
+    async function addFunding() {
+        const amount = parseFloat(dom.additionalFunding.value);
+        if (isNaN(amount) || amount <= 0) {
+            logEvent("Invalid funding amount.", "WARNING");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/capital/inject`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: amount })
+            });
+            if (!response.ok) throw new Error(`Inject failed: ${response.statusText}`);
+
+            logEvent(`Successfully requested injection of ${formatCurrency(amount)}.`, "INFO");
+            dom.additionalFunding.value = "0";
+
+        } catch (error) {
+            logEvent(`Funding Error: ${error.message}`, "ERROR");
+        }
+    }
+
+    async function tsoLookupSignal() {
+        const ticker = dom.tsoTickerInput.value.toUpperCase().trim();
+        if (!ticker) {
+            dom.aiExplanation.textContent = "Please enter a ticker.";
+            return;
+        }
+
+        dom.aiExplanation.textContent = `Querying Agentic TSO for ${ticker}...`;
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/research/tso`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ticker: ticker })
+            });
+
+            if (!response.ok) throw new Error(`TSO failed: ${response.statusText}`);
+
+            const result = await response.json();
+            if (result.error) throw new Error(result.error);
+
+            dom.aiExplanation.textContent = result.summary;
+
+        } catch (error) {
+            dom.aiExplanation.textContent = `TSO Error: ${error.message}`;
+            logEvent(`TSO Error: ${error.message}`, "ERROR");
+        }
+    }
+
+    function resetSimulation() {
+        if(isDeployed) {
+            stopBot();
+        }
+
+        dom.tradeLog.innerHTML = '<p class="text-gray-500">Log awaiting simulation deployment...</p>';
+        dom.aiExplanation.textContent = 'Awaiting lookup...';
+        dom.allocationDisplay.innerHTML = '<p class="text-gray-500">Deploy AethelBot to view allocations.</p>';
+
+        dom.initialInvestment.value = "100000";
+        dom.additionalFunding.value = "0";
+
+        dom.equityDisplay.textContent = formatCurrency(0);
+        dom.pnlDisplay.textContent = formatCurrency(0);
+        dom.totalExternalFunding.textContent = formatCurrency(0);
+        dom.initialFundingDisplay.textContent = formatCurrency(0);
+        dom.reinvestedProfitDisplay.textContent = formatCurrency(0);
+        dom.reinvestedProfitDisplay2.textContent = formatCurrency(0);
+
+        logEvent("Frontend UI Reset.", "SYSTEM");
+    }
+
+    // --- Bind Event Listeners ---
+    document.addEventListener('DOMContentLoaded', () => {
+        logEvent("Dashboard UI Initialized. Ready for backend deployment.", "SYSTEM");
+
+        dom.deployBtn.addEventListener('click', deployBot);
+        dom.stopBtn.addEventListener('click', stopBot);
+        dom.resetBtn.addEventListener('click', resetSimulation);
+        dom.addFundingBtn.addEventListener('click', addFunding);
+        dom.tsoLookupBtn.addEventListener('click', tsoLookupSignal);
+
+        dom.stopBtn.disabled = true;
+
+        // Set live time clock
+        setInterval(() => {
+            if (isDeployed) {
+                dom.simulatedTimeDisplay.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles' });
+            }
+        }, 1000);
+    });
+
+</script>
+</body>
+</html>

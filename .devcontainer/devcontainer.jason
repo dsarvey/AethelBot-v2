@@ -1,0 +1,5 @@
+{
+  "name": "AethelBot Container (V-ENV BUILT)",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  "postCreateCommand": "python3 -m venv venv && ./venv/bin/pip install --upgrade pip && ./venv/bin/pip install -r requirements.txt"
+}
