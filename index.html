@@ -72,11 +72,11 @@
             <div class="card p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <p class="text-xl text-gray-400">Individual Portfolio Value</p>
+                        <p class="text-xl text-gray-400">Live Portfolio Value (Alpaca)</p>
                         <p id="equity-display" class="text-4xl font-bold mt-1 text-green">$0.00</p>
-                        <p class="text-sm text-gray-500 mt-1">Total Net Gain/Loss: <span id="pnl-display" class="font-semibold text-gray-400">$0.00</span></p>
+                        <p class="text-sm text-gray-500 mt-1">Day's Gain/Loss: <span id="pnl-display" class="font-semibold text-gray-400">$0.00</span></p>
                         <div id="portfolio-graph" class="h-32 bg-primary-color mt-4 rounded-lg flex items-center justify-center text-gray-600">
-                            [P&L Graph Placeholder]
+                            [Live P&L Graph Placeholder]
                         </div>
                     </div>
                     <div class="space-y-3">
@@ -93,8 +93,8 @@
                             <p id="initial-funding-display" class="text-xl font-bold mt-1">$0.00</p>
                         </div>
                         <div class="p-3 bg-primary-color rounded-lg">
-                            <p class="text-sm text-gray-400">Reinvested Profit (Legacy)</p>
-                            <p id="reinvested-profit-display" class="text-xl font-bold mt-1">$0.00</p>
+                            <p class="text-sm text-gray-400">Uninvested Cash</p>
+                            <p id="uninvested-cash-display" class="text-xl font-bold mt-1">$0.00</p>
                         </div>
                     </div>
                 </div>
@@ -121,52 +121,9 @@
                     <button id="stop-btn" class="btn-secondary px-4 py-2 rounded-lg font-semibold" disabled>Stop</button>
                     <button id="reset-btn" class="btn-secondary px-4 py-2 rounded-lg font-semibold">Reset</button>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 mt-4 border-t border-border-color opacity-50">
-                    <div class="mt-2">
-                        <span class="text-sm font-medium text-gray-200 block mb-1">Active Persona:</span>
-                        <div class="flex flex-col space-y-2">
-                            <label class="flex items-center space-x-2 text-sm"><input type="radio" name="persona" checked disabled><span>AI (Autonomous)</span></label>
-                            <label class="flex items-center space-x-2 text-sm"><input type="radio" name="persona" disabled><span>Human (Executive)</span></label>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <span class="text-sm font-medium text-gray-200 block mb-1">Time Fidelity:</span>
-                        <div class="flex flex-col space-y-2">
-                            <label class="flex items-center space-x-2 text-sm"><input type="radio" name="fidelity" checked disabled><span>Real-Time Live</span></label>
-                            <label class="flex items-center space-x-2 text-sm"><input type="radio" name="fidelity" disabled><span>Accelerated</span></label>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <span class="text-sm font-medium text-gray-200 block mb-1">Executive Time Skip:</span>
-                        <div class="flex flex-col space-y-2">
-                            <button id="skip-month-btn" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-medium w-full" disabled>Jump 1 Month</button>
-                            <button id="skip-year-btn" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-medium w-full" disabled>Jump 1 Year</button>
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="text-center mt-4 p-2 rounded-lg border border-border-color bg-primary-color">
-                    <span class="text-sm font-medium text-yellow-400" id="current-mode-status">Mode: UNTETHERED LIVE</span>
-                </div>
-            </div>
-
-            <div class="card p-6 opacity-50">
-                <h2 class="text-2xl font-bold mb-4">Market & Strategy Configuration</h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="flex flex-col space-y-2">
-                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Stocks</span></label>
-                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Bonds</span></label>
-                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Equities (ETFs/Index)</span></label>
-                    </div>
-                    <div class="flex flex-col space-y-2">
-                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>REITs (Real Estate)</span></label>
-                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Cryptocurrency</span></label>
-                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Futures/Options</span></label>
-                    </div>
-                    <div class="flex flex-col space-y-2">
-                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Fractional Trading</span></label>
-                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" checked disabled><span>Long/Short Strategy</span></label>
-                    </div>
+                    <span class="text-sm font-medium text-yellow-400" id="current-mode-status">STATUS: Awaiting Deployment</span>
                 </div>
             </div>
 
@@ -181,13 +138,12 @@
                     Awaiting lookup...
                 </div>
                 <span id="explanation-status" class="text-xs text-gray-500 mt-2 block"></span>
-                <button id="explain-trade-btn" class="btn-secondary px-3 py-1.5 rounded-lg text-sm font-medium mt-2 w-full" disabled>✨ Explain Last Executed Trade (Disabled)</button>
             </div>
 
             <div class="card p-6">
                 <h2 class="text-2xl font-bold mb-3 border-b border-border-color pb-2">Allocation Watchlist</h2>
                 <div id="asset-allocation-display" class="text-sm space-y-1">
-                    <p class="text-gray-500">Deploy AethelBot to view allocations.</p>
+                    <p class="text-gray-500">Deploy AethelBot to view live allocations.</p>
                 </div>
             </div>
 
@@ -212,13 +168,8 @@
                                 <p class="text-gray-300 font-semibold">Dan Crenshaw (House Banking Committee) discloses liquidation of **-50,000 units** of **JPM**.</p>
                                 <p class="text-gray-500 text-xs mt-1">Source: Capitol Trades Signal - 45 min ago</p>
                             </div>
-                            <div class="border-b border-border-color pb-2">
-                                <p class="text-gray-300 font-semibold">AI ALERT: Unusual volume in **CSCO** from politically exposed persons detected, correlating with new tariff policy news. TSO lookup recommended.</p>
-                                <p class="text-gray-500 text-xs mt-1">Source: NSA Module (Correlation) - 1 hr ago</p>
-                            </div>
                         </div>
                     </div>
-
                     <div>
                         <h3 class="text-xl font-bold mb-3">AI News & Movers</h3>
                         <div class="space-y-4 text-sm mb-4">
@@ -226,391 +177,359 @@
                                 <p class="text-gray-300 font-semibold">Tariff Policy Shift: US government signals trade resolution, boosting Tech sector confidence.</p>
                                 <p class="text-gray-500 text-xs mt-1">Source: Google News - 32 min ago</p>
                             </div>
-                            <div class="border-b border-border-color pb-2">
-                                <p class="text-gray-300 font-semibold">Fed Anticipation: Interest rate consensus holds steady, stabilizing Bond market expectations.</p>
-                                <p class="text-gray-500 text-xs mt-1">Source: Investopedia - 1 hr ago</p>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card p-6">
-                <h2 class="text-2xl font-bold mb-4 border-b border-border-color pb-2">Annual Performance Audit (<span id="current-year">2025</span>)</h2>
-                <div id="annual-audit-display" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="p-3 bg-primary-color rounded-lg"><p class="text-sm text-gray-400">Annual Net Profit</p><p id="annual-net-profit" class="text-xl font-semibold mt-1">$0.00</p></div>
-                    <div class="p-3 bg-primary-color rounded-lg"><p class="text-sm text-gray-400">Taxable Gain Reduced by TLH</p><p id="tax-saved" class="text-xl font-semibold mt-1">$0.00</p></div>
-                    <div class="p-3 bg-primary-color rounded-lg"><p class="text-sm text-gray-400">Long-Term vs. Short-Term Gains</p><p id="lt-st-gains" class="text-xl font-semibold mt-1">S/T: $0.00, L/T: $0.00</p></div>
-                    <div class="p-3 bg-primary-color rounded-lg"><p class="text-sm text-gray-400">Reinvested Profit</p><p id="reinvested-profit-display-2" class="text-xl font-semibold mt-1">$0.00</p></div>
-                </div>
-            </div>
+        </div> 
+    </div>
+            
+    <script type="module">
+        // --- Configuration ---
 
-            <div class="card p-6 opacity-50">
-                <h2 class="text-2xl font-bold mb-2">Legacy Protocol Narrator (A-IWT)</h2>
-                <p class="text-sm text-gray-400 mb-4">Authoritative audio update for the Nevada Legacy Trust.</p>
-                <button id="speak-status-btn" class="btn-primary px-4 py-2 rounded-lg font-semibold text-sm" disabled>🎙️ Speak Legacy Status</button>
-                <div class="mt-4 flex items-center space-x-2">
-                    <span id="tts-status" class="text-sm text-gray-500">TTS Disabled (Endpoint not configured)</span>
-                    <audio id="tts-audio" controls class="w-full mt-2 hidden"></audio>
-                </div>
-            </div>
-
-        </div> </div> 
-
-<script type="module">
-    // --- Configuration ---
-
-    // ** CRITICAL STEP **
-    // WHEN YOU RUN THIS IN YOUR GITHUB CODESPACE, YOU MUST REPLACE
-    // THESE PLACEHOLDER URLS WITH THE *REAL* PUBLIC URLS THAT
-    // CODESPACES GIVES YOU.
-
-    // 1. Get the URL from the "Port 8000" (backend) popup
-    // 2. Get the URL from the "Port 8080" (frontend) popup
-
-    // const API_BASE_URL = "http://127.0.0.1:8000/v1";
-    // const WS_URL = "ws://127.0.0.1:8000/v1/dashboard"; 
-
-    // EXAMPLE (Replace with your own):
-    const API_BASE_URL = "https://your-name-random-stuff-8000.app.github.dev/v1";
-    const WS_URL = "wss://your-name-random-stuff-8000.app.github.dev/v1/dashboard";
+        // 1. Get the URL from the "Port 8000" (backend)
+        const API_BASE_URL = "https://didactic-funicular-7v6957wqp9772xw57-8000.app.github.dev/v1";
+        const WS_URL = "wss://didactic-funicular-7v6957wqp9772xw57-8000.app.github.dev/v1/dashboard";
 
 
-    // --- Global State ---
-    let socket = null;
-    let isDeployed = false;
-    let currentEquity = 0;
-    let totalExternalFunding = 0;
+        // --- Global State ---
+        let socket = null;
+        let isDeployed = false;
+        let currentEquity = 0;
+        let totalExternalFunding = 0;
 
-    // --- DOM Element Caching ---
-    const dom = {
-        equityDisplay: document.getElementById('equity-display'),
-        pnlDisplay: document.getElementById('pnl-display'),
-        totalExternalFunding: document.getElementById('total-external-funding'),
-        initialFundingDisplay: document.getElementById('initial-funding-display'),
-        reinvestedProfitDisplay: document.getElementById('reinvested-profit-display'),
-        reinvestedProfitDisplay2: document.getElementById('reinvested-profit-display-2'),
-        simulatedTimeDisplay: document.getElementById('simulated-time-display'),
+        // --- DOM Element Caching ---
+        const dom = {
+            equityDisplay: document.getElementById('equity-display'),
+            pnlDisplay: document.getElementById('pnl-display'),
+            totalExternalFunding: document.getElementById('total-external-funding'),
+            initialFundingDisplay: document.getElementById('initial-funding-display'),
+            uninvestedCashDisplay: document.getElementById('uninvested-cash-display'), 
+            simulatedTimeDisplay: document.getElementById('simulated-time-display'),
+            initialInvestment: document.getElementById('initial-investment'),
+            additionalFunding: document.getElementById('additional-funding'),
+            deployBtn: document.getElementById('deploy-btn'),
+            stopBtn: document.getElementById('stop-btn'),
+            resetBtn: document.getElementById('reset-btn'),
+            addFundingBtn: document.getElementById('add-funding-btn'),
+            tsoTickerInput: document.getElementById('tso-ticker-input'),
+            tsoLookupBtn: document.getElementById('tso-lookup-btn'),
+            aiExplanation: document.getElementById('ai-explanation'),
+            tradeLog: document.getElementById('trade-log'),
+            allocationDisplay: document.getElementById('asset-allocation-display'),
+            currentModeStatus: document.getElementById('current-mode-status')
+        };
 
-        initialInvestment: document.getElementById('initial-investment'),
-        additionalFunding: document.getElementById('additional-funding'),
+        // --- Utility Functions ---
+        const formatCurrency = (amount) => {
+            if (typeof amount !== 'number' || isNaN(amount)) {
+                return 'N/A';
+            }
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        };
 
-        deployBtn: document.getElementById('deploy-btn'),
-        stopBtn: document.getElementById('stop-btn'),
-        resetBtn: document.getElementById('reset-btn'),
-        addFundingBtn: document.getElementById('add-funding-btn'),
+        const logEvent = (message, type = 'INFO') => {
+            const timeStamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+            const color = {
+                'BUY': 'text-green-light',
+                'SELL': 'text-red-light',
+                'SYSTEM': 'text-yellow-400',
+                'WARNING': 'text-orange-400',
+                'INFO': 'text-gray-400',
+                'ERROR': 'text-red-500'
+            }[type] || 'text-gray-400';
 
-        tsoTickerInput: document.getElementById('tso-ticker-input'),
-        tsoLookupBtn: document.getElementById('tso-lookup-btn'),
-        explainTradeBtn: document.getElementById('explain-trade-btn'),
-        aiExplanation: document.getElementById('ai-explanation'),
+            const logEntry = document.createElement('p');
+            logEntry.className = `font-mono ${color} text-xs`;
+            logEntry.innerHTML = `[${timeStamp}] [${type}] ${message}`;
 
-        tradeLog: document.getElementById('trade-log'),
-        allocationDisplay: document.getElementById('asset-allocation-display'),
+            // Clear placeholder if it exists
+            if (dom.tradeLog.children.length === 1 && dom.tradeLog.children[0].textContent.startsWith("Log awaiting")) {
+                dom.tradeLog.innerHTML = '';
+            }
+            dom.tradeLog.prepend(logEntry);
+        };
 
-        speakStatusBtn: document.getElementById('speak-status-btn'),
-        ttsStatus: document.getElementById('tts-status'),
+        // --- Real-time Data Handlers ---
 
-        currentModeStatus: document.getElementById('current-mode-status')
-    };
+        function connectWebSocket() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                logEvent("WebSocket connection already open.", "INFO");
+                return;
+            }
+            logEvent(`Attempting to connect to WebSocket at ${WS_URL}...`, "SYSTEM");
 
-    // --- Utility Functions ---
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
-    };
+            try {
+                socket = new WebSocket(WS_URL);
+            } catch (error) {
+                logEvent(`WebSocket Error (Pre-connect): ${error.message}. Check WS_URL format.`, "ERROR");
+                return;
+            }
 
-    const logEvent = (message, type = 'INFO') => {
-        const timeStamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+            socket.onopen = () => {
+                logEvent("Real-time data stream CONNECTED.", "SYSTEM");
+                dom.currentModeStatus.textContent = "STATUS: LIVE (Connected)";
+                dom.currentModeStatus.classList.remove('text-yellow-400');
+                dom.currentModeStatus.classList.add('text-green-light');
+            };
 
-        const color = {
-            'BUY': 'text-green-light',
-            'SELL': 'text-red-light',
-            'SYSTEM': 'text-yellow-400',
-            'WARNING': 'text-orange-400',
-            'INFO': 'text-gray-400',
-            'ERROR': 'text-red-500'
-        }[type] || 'text-gray-400';
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                handleSocketMessage(message);
+            };
 
-        const logEntry = document.createElement('p');
-        logEntry.className = `font-mono ${color} text-xs`;
-        logEntry.innerHTML = `[${timeStamp}] [${type}] ${message}`;
+            socket.onclose = () => {
+                logEvent("Real-time data stream DISCONNECTED.", "ERROR");
+                dom.currentModeStatus.textContent = "STATUS: DISCONNECTED";
+                dom.currentModeStatus.classList.remove('text-green-light');
+                dom.currentModeStatus.classList.add('text-red-light');
+                socket = null;
+            };
 
-        dom.tradeLog.prepend(logEntry);
-    };
-
-    // --- Real-time Data Handlers (NEW) ---
-
-    function connectWebSocket() {
-        if (socket && socket.readyState === WebSocket.OPEN) {
-            logEvent("WebSocket connection already open.", "INFO");
-            return;
+            socket.onerror = (error) => {
+                logEvent(`WebSocket Error: Connection failed. Check backend server and WS_URL.`, "ERROR");
+                console.error("WebSocket Error:", error);
+            };
         }
 
-        logEvent(`Attempting to connect to WebSocket at ${WS_URL}...`, "SYSTEM");
-
-        socket = new WebSocket(WS_URL);
-
-        socket.onopen = () => {
-            logEvent("Real-time data stream CONNECTED.", "SYSTEM");
-        };
-
-        socket.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            handleSocketMessage(message);
-        };
-
-        socket.onclose = () => {
-            logEvent("Real-time data stream DISCONNECTED.", "ERROR");
-            socket = null;
-        };
-
-        socket.onerror = (error) => {
-            logEvent(`WebSocket Error: Check if backend server is running and URL is correct.`, "ERROR");
-            console.error("WebSocket Error:", error);
-        };
-    }
-
-    function handleSocketMessage(message) {
-        // This is the "router" that handles all PUSH messages from the backend
-        switch (message.type) {
-            case 'PRICE_UPDATE':
-                // You would use this to update the "Market Movers" card
-                // updateMarketMovers(message.payload);
-                break;
-            case 'LOG_ENTRY':
-                logEvent(message.payload.message, message.payload.level);
-                break;
-            case 'PORTFOLIO_UPDATE':
-                updatePortfolioUI(message.payload);
-                break;
-            default:
-                logEvent(`Unknown message type: ${message.type}`, "WARNING");
+        function handleSocketMessage(message) {
+            switch (message.type) {
+                case 'LOG_ENTRY':
+                    logEvent(message.payload.message, message.payload.level);
+                    break;
+                case 'PORTFOLIO_UPDATE':
+                    updatePortfolioUI(message.payload);
+                    break;
+                default:
+                    logEvent(`Unknown message type: ${message.type}`, "WARNING");
+            }
         }
-    }
 
-    // --- UI Update Functions (NEW) ---
+        // --- UI Update Functions ---
 
-    function updatePortfolioUI(payload) {
-        // Store global state
-        currentEquity = payload.equity;
-        totalExternalFunding = payload.totalExternalFunding;
+        function updatePortfolioUI(payload) {
+            currentEquity = payload.equity;
+            totalExternalFunding = payload.totalExternalFunding;
 
-        // Update Card 1: Metrics
-        dom.equityDisplay.textContent = formatCurrency(payload.equity);
-        dom.pnlDisplay.textContent = formatCurrency(payload.pnl);
-        dom.pnlDisplay.className = `text-sm font-semibold mt-1 ${payload.pnl >= 0 ? 'text-green' : 'text-red'}`;
+            dom.equityDisplay.textContent = formatCurrency(payload.equity);
+            dom.pnlDisplay.textContent = formatCurrency(payload.pnl);
+            dom.pnlDisplay.className = `text-sm font-semibold mt-1 ${payload.pnl >= 0 ? 'text-green' : 'text-red'}`;
 
-        dom.totalExternalFunding.textContent = formatCurrency(payload.totalExternalFunding);
-        dom.initialFundingDisplay.textContent = formatCurrency(payload.initialFunding || 0); 
-        dom.reinvestedProfitDisplay.textContent = formatCurrency(payload.reinvestedProfit);
-        dom.reinvestedProfitDisplay2.textContent = formatCurrency(payload.reinvestedProfit);
+            dom.totalExternalFunding.textContent = formatCurrency(payload.totalExternalFunding);
+            dom.initialFundingDisplay.textContent = formatCurrency(payload.initialFunding || 0);
+            dom.uninvestedCashDisplay.textContent = formatCurrency(payload.uninvestedCash);
 
-        // Update time display
-        dom.simulatedTimeDisplay.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles' });
+            // Update time display
+            dom.simulatedTimeDisplay.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles' });
 
+            // Update Card 5: Allocation Watchlist
+            dom.allocationDisplay.innerHTML = ''; // Clear old content
+            if (!payload.allocations || payload.allocations.length === 0) {
+                dom.allocationDisplay.innerHTML = '<p class="text-gray-500">Awaiting allocations...</p>';
+            } else {
+                // Add dynamic allocation rows if needed
+            }
+            
+            const cashPercent = payload.equity > 0 ? (payload.uninvestedCash / payload.equity) * 100 : 0;
+            const cashEntry = document.createElement('p');
+            cashEntry.className = 'flex justify-between font-bold border-t border-border-color pt-2 mt-2';
+            cashEntry.innerHTML = `<span>Uninvested Cash:</span> 
+                <span class="text-yellow-300">${formatCurrency(payload.uninvestedCash)} (${cashPercent.toFixed(1)}%)</span>`;
+            dom.allocationDisplay.appendChild(cashEntry);
+        }
 
-        // Update Card 5: Allocation Watchlist
-        dom.allocationDisplay.innerHTML = ''; // Clear old content
+        // --- API Call Functions ---
 
-        if (!payload.allocations || payload.allocations.length === 0) {
-            dom.allocationDisplay.innerHTML = '<p class="text-gray-500">Awaiting allocations...</p>';
-        } else {
-            payload.allocations.forEach(alloc => {
-                const classHeader = document.createElement('div');
-                classHeader.className = 'font-bold text-sm text-yellow-300 mb-1';
-                classHeader.innerHTML = `
-                    <div class="flex justify-between">
-                        <span>${alloc.class} Total:</span> 
-                        <span>${formatCurrency(alloc.value)} (${alloc.percent.toFixed(1)}%)</span>
-                    </div>
-                `;
-                dom.allocationDisplay.appendChild(classHeader);
+        async function deployBot() {
+            if (isDeployed) return;
 
-                const positionsContainer = document.createElement('div');
-                positionsContainer.className = 'pl-2 space-y-0.5 mb-2';
-                alloc.positions.forEach(pos => {
-                    const posEl = document.createElement('p');
-                    posEl.className = 'flex justify-between text-xs text-gray-300';
-                    posEl.innerHTML = `
-                        <span>${pos.symbol}</span>
-                        <span>Units: ${pos.units.toFixed(6)}</span>
-                        <span>${formatCurrency(pos.value)}</span>
-                    `;
-                    positionsContainer.appendChild(posEl);
+            const initial = parseFloat(dom.initialInvestment.value) || 0;
+            const additional = parseFloat(dom.additionalFunding.value) || 0;
+
+            const configuration = {
+                markets: ["Stocks", "Crypto"], // This is now handled by the agent
+                strategies: ["Statistical Arbitrage"]
+            };
+
+            logEvent(`Sending deploy command to ${API_BASE_URL}...`, "SYSTEM");
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/strategy/deploy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        initialFunding: initial,
+                        additionalCapital: additional,
+                        configuration: configuration
+                    })
                 });
-                dom.allocationDisplay.appendChild(positionsContainer);
-            });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(`Deploy failed: ${response.status} ${errText}`);
+                }
+
+                const result = await response.json();
+                logEvent(result.message, "SYSTEM");
+
+                isDeployed = true;
+                dom.deployBtn.disabled = true;
+                dom.stopBtn.disabled = false;
+                dom.initialInvestment.disabled = true;
+                dom.additionalFunding.disabled = true;
+                dom.addFundingBtn.disabled = true;
+
+                connectWebSocket();
+
+            } catch (error) {
+                logEvent(`Deploy Error: ${error.message}. Check API_BASE_URL and backend logs.`, "ERROR");
+            }
         }
 
-        const cashPercent = payload.equity > 0 ? (payload.uninvestedCash / payload.equity) * 100 : 0;
-        const cashEntry = document.createElement('p');
-        cashEntry.className = 'flex justify-between font-bold border-t border-border-color pt-2 mt-2';
-        cashEntry.innerHTML = `<span>Uninvested Cash:</span> 
-            <span class="text-yellow-300">${formatCurrency(payload.uninvestedCash)} (${cashPercent.toFixed(1)}%)</span>`;
-        dom.allocationDisplay.appendChild(cashEntry);
-    }
+        async function stopBot() {
+            if (!isDeployed) return;
 
-    // --- API Call Functions (NEW) ---
+            try {
+                const response = await fetch(`${API_BASE_URL}/strategy/stop`, { method: 'POST' });
+                if (!response.ok) throw new Error(`Stop failed: ${response.statusText}`);
 
-    async function deployBot() {
-        if (isDeployed) return;
+                const result = await response.json();
 
-        const initial = parseFloat(dom.initialInvestment.value) || 0;
-        const additional = parseFloat(dom.additionalFunding.value) || 0;
+                isDeployed = false;
+                dom.deployBtn.disabled = false;
+                dom.stopBtn.disabled = true;
+                dom.initialInvestment.disabled = false;
+                dom.additionalFunding.disabled = false;
+                dom.addFundingBtn.disabled = false;
 
-        const configuration = {
-            markets: ["Stocks", "Crypto"], // Simplified
-            strategies: ["Fractional"]
-        };
+                if (socket) {
+                    socket.close();
+                    socket = null;
+                }
 
-        logEvent(`Sending deploy command to ${API_BASE_URL}...`, "SYSTEM");
+                logEvent(result.message, "SYSTEM");
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/strategy/deploy`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    initialFunding: initial,
-                    additionalCapital: additional,
-                    configuration: configuration
-                })
-            });
-
-            if (!response.ok) throw new Error(`Deploy failed: ${response.status} ${response.statusText}`);
-
-            const result = await response.json();
-            logEvent(result.message, "SYSTEM");
-
-            isDeployed = true;
-            dom.deployBtn.disabled = true;
-            dom.stopBtn.disabled = false;
-
-            connectWebSocket();
-
-        } catch (error) {
-            logEvent(`Deploy Error: ${error.message}. Check API_BASE_URL and backend logs.`, "ERROR");
+            } catch (error) {
+                logEvent(`Stop Error: ${error.message}`, "ERROR");
+            }
         }
-    }
+        
+        // This function is for a full UI and state reset
+        function resetUI() {
+            if(isDeployed) {
+                stopBot(); // Request backend stop first
+            }
 
-    async function stopBot() {
-        if (!isDeployed) return;
+            dom.tradeLog.innerHTML = '<p class="text-gray-500">Log awaiting simulation deployment...</p>';
+            dom.aiExplanation.textContent = 'Awaiting lookup...';
+            dom.allocationDisplay.innerHTML = '<p class="text-gray-500">Deploy AethelBot to view allocations.</p>';
+            dom.initialInvestment.value = "100000";
+            dom.additionalFunding.value = "0";
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/strategy/stop`, { method: 'POST' });
-            if (!response.ok) throw new Error(`Stop failed: ${response.statusText}`);
-
-            const result = await response.json();
+            dom.equityDisplay.textContent = formatCurrency(0);
+            dom.pnlDisplay.textContent = formatCurrency(0);
+            dom.totalExternalFunding.textContent = formatCurrency(0);
+            dom.initialFundingDisplay.textContent = formatCurrency(0);
+            dom.uninvestedCashDisplay.textContent = formatCurrency(0);
+            
+            dom.currentModeStatus.textContent = "STATUS: Awaiting Deployment";
+            dom.currentModeStatus.classList.remove('text-green-light', 'text-red-light');
+            dom.currentModeStatus.classList.add('text-yellow-400');
 
             isDeployed = false;
             dom.deployBtn.disabled = false;
             dom.stopBtn.disabled = true;
+            dom.initialInvestment.disabled = false;
+            dom.additionalFunding.disabled = false;
+            dom.addFundingBtn.disabled = false;
 
-            if (socket) {
-                socket.close();
-                socket = null;
+            logEvent("Frontend UI Reset.", "SYSTEM");
+        }
+
+        async function addFunding() {
+            const amount = parseFloat(dom.additionalFunding.value);
+            if (isNaN(amount) || amount <= 0) {
+                logEvent("Invalid funding amount.", "WARNING");
+                return;
             }
 
-            logEvent(result.message, "SYSTEM");
+            // If bot isn't deployed, just add to the input and let deploy handle it
+            if (!isDeployed) {
+                logEvent("Bot not deployed. Adding to 'Initial Funding' for next deployment.", "INFO");
+                const currentInitial = parseFloat(dom.initialInvestment.value) || 0;
+                dom.initialInvestment.value = currentInitial + amount;
+                dom.additionalFunding.value = "0";
+                return;
+            }
 
-        } catch (error) {
-            logEvent(`Stop Error: ${error.message}`, "ERROR");
-        }
-    }
+            // If bot IS deployed, send live injection command
+            try {
+                const response = await fetch(`${API_BASE_URL}/capital/inject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: amount })
+                });
+                if (!response.ok) throw new Error(`Inject failed: ${response.statusText}`);
 
-    async function addFunding() {
-        const amount = parseFloat(dom.additionalFunding.value);
-        if (isNaN(amount) || amount <= 0) {
-            logEvent("Invalid funding amount.", "WARNING");
-            return;
-        }
+                logEvent(`Successfully requested injection of ${formatCurrency(amount)}. Awaiting stream confirmation.`, "INFO");
+                dom.additionalFunding.value = "0";
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/capital/inject`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount: amount })
-            });
-            if (!response.ok) throw new Error(`Inject failed: ${response.statusText}`);
-
-            logEvent(`Successfully requested injection of ${formatCurrency(amount)}.`, "INFO");
-            dom.additionalFunding.value = "0";
-
-        } catch (error) {
-            logEvent(`Funding Error: ${error.message}`, "ERROR");
-        }
-    }
-
-    async function tsoLookupSignal() {
-        const ticker = dom.tsoTickerInput.value.toUpperCase().trim();
-        if (!ticker) {
-            dom.aiExplanation.textContent = "Please enter a ticker.";
-            return;
+            } catch (error) {
+                logEvent(`Funding Error: ${error.message}`, "ERROR");
+            }
         }
 
-        dom.aiExplanation.textContent = `Querying Agentic TSO for ${ticker}...`;
+        async function tsoLookupSignal() {
+            const ticker = dom.tsoTickerInput.value.toUpperCase().trim();
+            if (!ticker) {
+                dom.aiExplanation.textContent = "Please enter a ticker.";
+                return;
+            }
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/research/tso`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ticker: ticker })
-            });
+            dom.aiExplanation.textContent = `Querying Agentic TSO for ${ticker}...`;
+            dom.tsoLookupBtn.disabled = true;
 
-            if (!response.ok) throw new Error(`TSO failed: ${response.statusText}`);
+            try {
+                const response = await fetch(`${API_BASE_URL}/research/tso`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticker: ticker })
+                });
 
-            const result = await response.json();
-            if (result.error) throw new Error(result.error);
+                if (!response.ok) throw new Error(`TSO failed: ${response.statusText}`);
 
-            dom.aiExplanation.textContent = result.summary;
+                const result = await response.json();
+                if (result.error) throw new Error(result.error);
 
-        } catch (error) {
-            dom.aiExplanation.textContent = `TSO Error: ${error.message}`;
-            logEvent(`TSO Error: ${error.message}`, "ERROR");
+                dom.aiExplanation.textContent = result.summary;
+
+            } catch (error) {
+                dom.aiExplanation.textContent = `TSO Error: ${error.message}`;
+                logEvent(`TSO Error: ${error.message}`, "ERROR");
+            } finally {
+                dom.tsoLookupBtn.disabled = false;
+            }
         }
-    }
 
-    function resetSimulation() {
-        if(isDeployed) {
-            stopBot();
-        }
+        // --- Bind Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            logEvent("Dashboard UI Initialized. Ready for backend deployment.", "SYSTEM");
 
-        dom.tradeLog.innerHTML = '<p class="text-gray-500">Log awaiting simulation deployment...</p>';
-        dom.aiExplanation.textContent = 'Awaiting lookup...';
-        dom.allocationDisplay.innerHTML = '<p class="text-gray-500">Deploy AethelBot to view allocations.</p>';
+            dom.deployBtn.addEventListener('click', deployBot);
+            dom.stopBtn.addEventListener('click', stopBot);
+            dom.resetBtn.addEventListener('click', resetUI);
+            dom.addFundingBtn.addEventListener('click', addFunding);
+            dom.tsoLookupBtn.addEventListener('click', tsoLookupSignal);
 
-        dom.initialInvestment.value = "100000";
-        dom.additionalFunding.value = "0";
+            dom.stopBtn.disabled = true;
 
-        dom.equityDisplay.textContent = formatCurrency(0);
-        dom.pnlDisplay.textContent = formatCurrency(0);
-        dom.totalExternalFunding.textContent = formatCurrency(0);
-        dom.initialFundingDisplay.textContent = formatCurrency(0);
-        dom.reinvestedProfitDisplay.textContent = formatCurrency(0);
-        dom.reinvestedProfitDisplay2.textContent = formatCurrency(0);
-
-        logEvent("Frontend UI Reset.", "SYSTEM");
-    }
-
-    // --- Bind Event Listeners ---
-    document.addEventListener('DOMContentLoaded', () => {
-        logEvent("Dashboard UI Initialized. Ready for backend deployment.", "SYSTEM");
-
-        dom.deployBtn.addEventListener('click', deployBot);
-        dom.stopBtn.addEventListener('click', stopBot);
-        dom.resetBtn.addEventListener('click', resetSimulation);
-        dom.addFundingBtn.addEventListener('click', addFunding);
-        dom.tsoLookupBtn.addEventListener('click', tsoLookupSignal);
-
-        dom.stopBtn.disabled = true;
-
-        // Set live time clock
-        setInterval(() => {
-            if (isDeployed) {
+            // Set live time clock
+            setInterval(() => {
                 dom.simulatedTimeDisplay.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles' });
-            }
-        }, 1000);
-    });
+            }, 1000);
+        });
 
-</script>
+    </script>
 </body>
 </html>
